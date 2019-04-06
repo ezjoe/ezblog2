@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 1. namespace必须和Mapper接口类路径一致 -->
+<!-- 2. id必须和Mapper接口方法名一致 -->
+<!-- 3. parameterType必须和接口方法参数类型一致 -->
+<!-- 4. resultType必须和接口方法返回值类型一致 -->
+<mapper namespace="org.eu.qiao.myspringboot.mapper.UserMapper">
+    <!-- 根据用户名和密码查询用户 -->
+    <select id="findByUsernameAndPassword" parameterType="String"
+            resultType="org.eu.qiao.myspringboot.pojo.User">
+		select * from user where username = #{username} and password = #{password}
+	</select>
+
+</mapper>

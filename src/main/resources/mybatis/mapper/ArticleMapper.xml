@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 1. namespace必须和Mapper接口类路径一致 -->
+<!-- 2. id必须和Mapper接口方法名一致 -->
+<!-- 3. parameterType必须和接口方法参数类型一致 -->
+<!-- 4. resultType必须和接口方法返回值类型一致 -->
+<mapper namespace="org.eu.qiao.myspringboot.mapper.ArticleMapper">
+
+    
+    <!-- 根据用户名和密码查询用户 -->
+    <select id="findAll" resultType="org.eu.qiao.myspringboot.pojo.Article">
+		select * from article
+	</select>
+
+    <select id="findAllByCategoryId" parameterType="String" resultType="org.eu.qiao.myspringboot.pojo.Article">
+		select * from article where category_id = #{category.id}
+	</select>
+
+    <select id="findByTitleLike" parameterType="String" resultType="org.eu.qiao.myspringboot.pojo.Article">
+		select * from article where title like CONCAT('%',#{keyword},'%')
+	</select>
+
+    <select id="getOne" parameterType="String" resultType="org.eu.qiao.myspringboot.pojo.Article">
+		select * from article where id like #{id}
+	</select>
+
+    <insert id="save" parameterType="org.eu.qiao.myspringboot.pojo.Article">
+        <selectKey resultType="java.lang.String" order="BEFORE" keyProperty="id">
+            SELECT uuid()
+        </selectKey>
+        insert into article (id,content,date,summary,title,category_id) values
+        (#{id},#{content},#{date},#{summary},#{title},#{category.id})
+    </insert>
+
+    <delete id="deleteById" parameterType="String">
+        delete from article where id = #{id}
+    </delete>
+
+
+
+</mapper>
