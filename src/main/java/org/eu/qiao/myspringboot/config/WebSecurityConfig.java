@@ -36,7 +36,8 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         // 排除配置
         addInterceptor.excludePathPatterns("/admin/login");
         // 拦截配置
-        addInterceptor.addPathPatterns("/admin*");
+        addInterceptor.addPathPatterns("/admin");
+        addInterceptor.addPathPatterns("/admin/*");
     }
 
 
@@ -45,8 +46,6 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         @Override
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
                 throws Exception {
-            System.out.println("---后台登录拦截---");
-
             String path =request.getServletPath();
             if(path.contains("login")){
                 return true;
