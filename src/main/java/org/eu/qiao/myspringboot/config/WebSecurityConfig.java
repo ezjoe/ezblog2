@@ -1,5 +1,6 @@
 package org.eu.qiao.myspringboot.config;
 
+import org.apache.catalina.Session;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * @ClassNamg WebSecurityConfig
@@ -22,7 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 @Configuration
 public class WebSecurityConfig implements WebMvcConfigurer {
 
-    public final static String SESSION_KEY = "user";
 
 
     @Bean
@@ -50,20 +51,14 @@ public class WebSecurityConfig implements WebMvcConfigurer {
             if(path.contains("login")){
                 return true;
             }
-            Cookie[] cookies = request.getCookies();
-            if (cookies == null) {
+            HttpSession session = request.getSession();
+            if (session.getAttribute("user") == null) {
                 response.sendRedirect("/admin/login");
                 return false;
+            }else {
+                return true;
             }
 
-            for (Cookie cookie : cookies) {
-                System.out.println(cookie.getName() + "拦截器中的cookie");
-                if (cookie.getName().equals(SESSION_KEY)) {
-                    return true;
-                }
-            }
-            response.sendRedirect("/admin/login");
-            return false;
         }
     }
 

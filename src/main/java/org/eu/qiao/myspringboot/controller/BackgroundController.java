@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -70,13 +72,12 @@ public class BackgroundController {
      * @return
      */
     @PostMapping(value = "/dologin")
-    public String doLogin(HttpServletResponse response, User user, Model model){
+    public String doLogin(HttpServletResponse response, HttpServletRequest request, User user, Model model){
 
         if(userService.login(user.getUsername(), user.getPassword())){
-            Cookie cookie = new Cookie(WebSecurityConfig.SESSION_KEY, user.toString());
-            response.addCookie(cookie);
+            HttpSession session = request.getSession();
+            session.setAttribute("user",user.getUsername());
             model.addAttribute("user", user);
-            System.out.println(cookie.getName());
             return "redirect:/admin/";
         }else {
             model.addAttribute("error", "用户名或者密码错误");
